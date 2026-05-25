@@ -1,0 +1,35 @@
+Assignment 2.1 - Python Interview Problems
+
+This folder contains one Python file per coding interview problem.
+
+Files
+- valid_anagram.py
+- first_last_index.py
+- kth_largest_element.py
+- symmetric_tree.py
+- generate_parentheses.py
+- gas_station.py
+- course_schedule.py
+- kth_permutation.py
+- minimum_window_substring.py
+- largest_rectangle_histogram.py
+
+Run each file from the folder:
+1. cd "c:\AshwathShettyK\Projects\Jumpwhere-Internship-Assignments\Assignment-2\2.1"
+2. python valid_anagram.py
+3. python first_last_index.py
+4. python kth_largest_element.py
+5. python symmetric_tree.py
+6. python generate_parentheses.py
+7. python gas_station.py
+8. python course_schedule.py
+9. python kth_permutation.py
+10. python minimum_window_substring.py
+11. python largest_rectangle_histogram.py
+
+All files are standalone and include:
+- Problem statement comment
+- Function-based solution
+- Sample input/output
+- __main__ block for testing
+- Time and space complexity notes
