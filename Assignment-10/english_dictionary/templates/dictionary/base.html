@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% load static %}
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{% block title %}English Dictionary{% endblock %}</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" crossorigin="anonymous" />
+    <link rel="stylesheet" href="{% static 'css/style.css' %}" />
+</head>
+<body>
+    <header class="bg-dark text-white py-3">
+        <div class="container d-flex flex-column flex-md-row justify-content-between align-items-center">
+            <a href="{% url 'dictionary:home' %}" class="navbar-brand text-white">English Dictionary</a>
+            <nav>
+                <a class="text-white me-3" href="{% url 'dictionary:home' %}">Home</a>
+                <a class="text-white" href="{% url 'dictionary:home' %}">Search</a>
+            </nav>
+        </div>
+    </header>
+    <main class="container my-5">
+        {% block content %}{% endblock %}
+    </main>
+    <footer class="bg-light py-4 mt-auto">
+        <div class="container text-center text-muted">
+            Dictionary app using dictionaryapi.dev and Django templates.
+        </div>
+    </footer>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
+</body>
+</html>

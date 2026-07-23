@@ -1,0 +1,37 @@
+{% extends 'dictionary/base.html' %}
+
+{% block title %}Dictionary Home{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-lg-8">
+        <div class="card shadow-sm">
+            <div class="card-body">
+                <h1 class="card-title">Search English words</h1>
+                <p class="text-muted">Type a word to view definitions, examples, synonyms, and antonyms.</p>
+                <form method="get" action="{% url 'dictionary:search' %}" novalidate>
+                    <div class="input-group mb-3">
+                        {{ form.word }}
+                        <button class="btn btn-primary" type="submit">Search</button>
+                    </div>
+                    {% if form.word.errors %}
+                        <div class="text-danger">{{ form.word.errors.0 }}</div>
+                    {% endif %}
+                </form>
+            </div>
+        </div>
+        {% if recent_searches %}
+        <div class="card shadow-sm mt-4">
+            <div class="card-body">
+                <h5 class="card-title">Recent searches</h5>
+                <div class="d-flex flex-wrap gap-2">
+                    {% for item in recent_searches %}
+                        <a class="btn btn-outline-secondary btn-sm" href="{% url 'dictionary:detail' item.word %}">{{ item.word }}</a>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}
