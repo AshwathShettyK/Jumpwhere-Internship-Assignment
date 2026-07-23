@@ -1,0 +1,47 @@
+{% extends 'shortener/base.html' %}
+
+{% block title %}Short URL Created{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-lg-8">
+        <div class="card shadow-sm">
+            <div class="card-body">
+                <h1 class="card-title">Short URL Created</h1>
+                <p class="card-text">Your shortened link is ready to share.</p>
+                <div class="mb-3">
+                    <label class="form-label">Short URL</label>
+                    <div class="input-group">
+                        <input id="shortUrl" type="text" class="form-control" readonly value="{{ request.scheme }}://{{ request.get_host }}/{{ shortened.short_code }}/" />
+                        <button type="button" class="btn btn-outline-secondary" onclick="copyShortUrl(this)">Copy</button>
+                    </div>
+                </div>
+                <dl class="row">
+                    <dt class="col-sm-4">Original URL</dt>
+                    <dd class="col-sm-8"><a href="{{ shortened.long_url }}" target="_blank">{{ shortened.long_url }}</a></dd>
+                    <dt class="col-sm-4">Clicks</dt>
+                    <dd class="col-sm-8">{{ shortened.click_count }}</dd>
+                    <dt class="col-sm-4">Created</dt>
+                    <dd class="col-sm-8">{{ shortened.created_at|date:'M d, Y H:i' }}</dd>
+                </dl>
+                <a href="{% url 'shortener:home' %}" class="btn btn-secondary">Create another short link</a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+function copyShortUrl() {
+    const input = document.getElementById('shortUrl');
+    input.select();
+    input.setSelectionRange(0, 99999);
+    navigator.clipboard.writeText(input.value).then(() => {
+        const button = event.target;
+        button.textContent = 'Copied';
+        setTimeout(() => button.textContent = 'Copy', 1500);
+    });
+}
+</script>
+{% endblock %}

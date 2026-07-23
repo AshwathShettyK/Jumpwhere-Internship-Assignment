@@ -1,0 +1,40 @@
+{% extends 'shortener/base.html' %}
+
+{% block title %}URL Shortener | Home{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-lg-8">
+        <div class="card shadow-sm">
+            <div class="card-body">
+                <h1 class="card-title">Shorten any URL</h1>
+                <p class="card-text">Paste a long URL and generate a shorter link that tracks clicks.</p>
+                <form method="post" novalidate>
+                    {% csrf_token %}
+                    <div class="mb-3">
+                        {{ form.long_url.label_tag }}
+                        {{ form.long_url }}
+                        {% if form.long_url.errors %}
+                            <div class="invalid-feedback d-block">{{ form.long_url.errors.0 }}</div>
+                        {% endif %}
+                    </div>
+                    <button type="submit" class="btn btn-primary">Generate Short URL</button>
+                </form>
+            </div>
+        </div>
+        {% if latest_urls %}
+        <div class="mt-4">
+            <h2>Recent shortened links</h2>
+            <div class="list-group">
+                {% for item in latest_urls %}
+                    <a href="{% url 'shortener:result' item.short_code %}" class="list-group-item list-group-item-action">
+                        <strong>{{ request.build_absolute_uri }}{{ item.short_code }}</strong>
+                        <div class="text-muted small">{{ item.long_url }} • {{ item.click_count }} clicks • {{ item.created_at|date:'M d, Y' }}</div>
+                    </a>
+                {% endfor %}
+            </div>
+        </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}
