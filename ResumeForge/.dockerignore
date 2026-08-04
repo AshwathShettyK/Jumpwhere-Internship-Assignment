@@ -1,0 +1,12 @@
+__pycache__/
+*.pyc
+env/
+venv/
+.venv/
+*.sqlite3
+/media/
+staticfiles/
+.env
+testout.txt
+testout2.txt
+.git

@@ -1,0 +1,247 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="row gx-4">
+  <!-- Sidebar Navigation Column -->
+  <div class="col-xl-3 col-lg-4 mb-4">
+    {% include 'includes/sidebar.html' %}
+  </div>
+
+  <!-- Content Column -->
+  <div class="col-xl-9 col-lg-8">
+    
+    <!-- Top Header Area -->
+    <div class="mb-4">
+      {% include 'includes/navbar.html' %}
+    </div>
+
+    <!-- Core Statistics Cards Grid -->
+    <div class="row g-4 mb-4">
+      
+      <!-- Employees Card -->
+      <div class="col-xl-3 col-md-6">
+        <div class="card card-premium h-100 p-2">
+          <div class="card-body d-flex align-items-center">
+            <div class="bg-primary-subtle text-primary rounded-3 d-flex align-items-center justify-content-center me-3" style="width: 56px; height: 56px;">
+              <i class="bi bi-people-fill fs-3"></i>
+            </div>
+            <div>
+              <p class="text-uppercase text-muted fw-bold mb-1" style="font-size: 0.65rem; letter-spacing: 0.5px;">Total Employees</p>
+              <h3 class="fw-bold mb-0 text-dark">{{ total_employees }}</h3>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Projects Card -->
+      <div class="col-xl-3 col-md-6">
+        <div class="card card-premium h-100 p-2">
+          <div class="card-body d-flex align-items-center">
+            <div class="bg-success-subtle text-success rounded-3 d-flex align-items-center justify-content-center me-3" style="width: 56px; height: 56px;">
+              <i class="bi bi-kanban-fill fs-3"></i>
+            </div>
+            <div>
+              <p class="text-uppercase text-muted fw-bold mb-1" style="font-size: 0.65rem; letter-spacing: 0.5px;">Active Projects</p>
+              <h3 class="fw-bold mb-0 text-dark">{{ active_projects }}</h3>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Coding Skills Card -->
+      <div class="col-xl-3 col-md-6">
+        <div class="card card-premium h-100 p-2">
+          <div class="card-body d-flex align-items-center">
+            <div class="bg-warning-subtle text-warning rounded-3 d-flex align-items-center justify-content-center me-3" style="width: 56px; height: 56px;">
+              <i class="bi bi-code-slash fs-3"></i>
+            </div>
+            <div>
+              <p class="text-uppercase text-muted fw-bold mb-1" style="font-size: 0.65rem; letter-spacing: 0.5px;">Coding Skills</p>
+              <h3 class="fw-bold mb-0 text-dark">{{ total_coding }}</h3>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Tools Registry Card -->
+      <div class="col-xl-3 col-md-6">
+        <div class="card card-premium h-100 p-2">
+          <div class="card-body d-flex align-items-center">
+            <div class="bg-info-subtle text-info rounded-3 d-flex align-items-center justify-content-center me-3" style="width: 56px; height: 56px;">
+              <i class="bi bi-tools fs-3"></i>
+            </div>
+            <div>
+              <p class="text-uppercase text-muted fw-bold mb-1" style="font-size: 0.65rem; letter-spacing: 0.5px;">Tools Registered</p>
+              <h3 class="fw-bold mb-0 text-dark">{{ total_tools }}</h3>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Secondary Status Metrics Panel -->
+    <div class="row g-4 mb-4">
+      
+      <!-- Designation Metrics -->
+      <div class="col-xl-3 col-md-6">
+        <div class="card border-0 border-start border-4 border-primary shadow-sm h-100 bg-white">
+          <div class="card-body py-3">
+            <span class="text-muted small fw-medium text-uppercase">Designations</span>
+            <div class="d-flex align-items-baseline justify-content-between mt-1">
+              <h4 class="fw-bold mb-0 text-dark">{{ total_designations }}</h4>
+              <span class="text-primary small"><i class="bi bi-briefcase"></i> Mapped</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Current Active Employees -->
+      <div class="col-xl-3 col-md-6">
+        <div class="card border-0 border-start border-4 border-success shadow-sm h-100 bg-white">
+          <div class="card-body py-3">
+            <span class="text-muted small fw-medium text-uppercase">Active Staff</span>
+            <div class="d-flex align-items-baseline justify-content-between mt-1">
+              <h4 class="fw-bold mb-0 text-dark">{{ current_employees }}</h4>
+              <span class="text-success small"><i class="bi bi-person-check"></i> Present</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Ex Employees -->
+      <div class="col-xl-3 col-md-6">
+        <div class="card border-0 border-start border-4 border-danger shadow-sm h-100 bg-white">
+          <div class="card-body py-3">
+            <span class="text-muted small fw-medium text-uppercase">Ex Staff</span>
+            <div class="d-flex align-items-baseline justify-content-between mt-1">
+              <h4 class="fw-bold mb-0 text-dark">{{ ex_employees }}</h4>
+              <span class="text-danger small"><i class="bi bi-person-x"></i> Relieved</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Closed Projects -->
+      <div class="col-xl-3 col-md-6">
+        <div class="card border-0 border-start border-4 border-secondary shadow-sm h-100 bg-white">
+          <div class="card-body py-3">
+            <span class="text-muted small fw-medium text-uppercase">Closed Projects</span>
+            <div class="d-flex align-items-baseline justify-content-between mt-1">
+              <h4 class="fw-bold mb-0 text-dark">{{ closed_projects }}</h4>
+              <span class="text-secondary small"><i class="bi bi-archive"></i> Archived</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Lists Grid (Recent Activity) -->
+    <div class="row g-4">
+      
+      <!-- Recently Added Employees -->
+      <div class="col-xl-6">
+        <div class="card border-0 shadow-sm rounded-4 overflow-hidden h-100 bg-white">
+          <div class="card-header bg-white border-0 pt-4 px-4 d-flex justify-content-between align-items-center">
+            <h5 class="fw-bold text-dark mb-0"><i class="bi bi-clock-history me-2 text-primary"></i>Recent Employees</h5>
+            <a href="{% url 'employees:list' %}" class="btn btn-sm btn-light text-primary fw-semibold rounded-3 px-3">View All</a>
+          </div>
+          <div class="card-body p-0">
+            <div class="table-responsive">
+              <table class="table table-hover align-middle mb-0">
+                <thead class="table-light">
+                  <tr style="font-size: 0.8rem; text-transform: uppercase; color: var(--text-muted);">
+                    <th class="ps-4">Employee</th>
+                    <th>Designation</th>
+                    <th>Status</th>
+                    <th class="pe-4 text-end">Added</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {% if recent_employees %}
+                    {% for employee in recent_employees %}
+                      <tr style="font-size: 0.9rem;">
+                        <td class="ps-4 fw-semibold text-dark">
+                          {{ employee.full_name|default:employee.pk }}
+                        </td>
+                        <td class="text-secondary">
+                          {{ employee.designation.designation_name|default:'Unassigned' }}
+                        </td>
+                        <td>
+                          {% if employee.status == 'active' %}
+                            <span class="badge bg-success-subtle text-success rounded-pill px-3">Active</span>
+                          {% else %}
+                            <span class="badge bg-danger-subtle text-danger rounded-pill px-3">Inactive</span>
+                          {% endif %}
+                        </td>
+                        <td class="pe-4 text-end text-muted">
+                          {{ employee.created_at|date:'M d, Y'|default:'-' }}
+                        </td>
+                      </tr>
+                    {% endfor %}
+                  {% else %}
+                    <tr>
+                      <td colspan="4" class="text-center text-muted py-4">No employee records added yet.</td>
+                    </tr>
+                  {% endif %}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Recently Added Projects -->
+      <div class="col-xl-6">
+        <div class="card border-0 shadow-sm rounded-4 overflow-hidden h-100 bg-white">
+          <div class="card-header bg-white border-0 pt-4 px-4 d-flex justify-content-between align-items-center">
+            <h5 class="fw-bold text-dark mb-0"><i class="bi bi-folder-check me-2 text-success"></i>Recent Projects</h5>
+            <a href="{% url 'projects:list' %}" class="btn btn-sm btn-light text-success fw-semibold rounded-3 px-3">View All</a>
+          </div>
+          <div class="card-body p-0">
+            <div class="table-responsive">
+              <table class="table table-hover align-middle mb-0">
+                <thead class="table-light">
+                  <tr style="font-size: 0.8rem; text-transform: uppercase; color: var(--text-muted);">
+                    <th class="ps-4">Project</th>
+                    <th>Status</th>
+                    <th class="pe-4 text-end">Created Date</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {% if recent_projects %}
+                    {% for project in recent_projects %}
+                      <tr style="font-size: 0.9rem;">
+                        <td class="ps-4 fw-semibold text-dark">
+                          {{ project.project_name|default:project.pk }}
+                        </td>
+                        <td>
+                          {% if project.status == 'active' %}
+                            <span class="badge bg-success-subtle text-success rounded-pill px-3">Active</span>
+                          {% else %}
+                            <span class="badge bg-secondary-subtle text-secondary rounded-pill px-3">Closed</span>
+                          {% endif %}
+                        </td>
+                        <td class="pe-4 text-end text-muted">
+                          {{ project.created_at|date:'M d, Y'|default:'-' }}
+                        </td>
+                      </tr>
+                    {% endfor %}
+                  {% else %}
+                    <tr>
+                      <td colspan="3" class="text-center text-muted py-4">No corporate projects added yet.</td>
+                    </tr>
+                  {% endif %}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+</div>
+{% endblock %}

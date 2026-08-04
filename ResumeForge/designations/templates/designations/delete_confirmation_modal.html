@@ -1,0 +1,76 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="row gx-4">
+  <!-- Sidebar Navigation -->
+  <div class="col-xl-3 col-lg-4 mb-4">
+    {% include 'includes/sidebar.html' %}
+  </div>
+
+  <!-- Content Column -->
+  <div class="col-xl-9 col-lg-8">
+    
+    <!-- Top Navbar Area -->
+    <div class="mb-4">
+      {% include 'includes/navbar.html' %}
+    </div>
+
+    <!-- Breadcrumbs -->
+    <nav aria-label="breadcrumb" class="mb-4">
+      <ol class="breadcrumb bg-white px-3 py-2 rounded-3 shadow-sm">
+        <li class="breadcrumb-item"><a href="/" class="text-decoration-none"><i class="bi bi-house-door-fill"></i> Home</a></li>
+        <li class="breadcrumb-item"><a href="{% url 'designations:list' %}" class="text-decoration-none">Designations</a></li>
+        <li class="breadcrumb-item active" aria-current="page">Confirm Removal</li>
+      </ol>
+    </nav>
+
+    <!-- Delete Confirmation Box -->
+    <div class="row justify-content-center">
+      <div class="col-xl-8 col-md-10">
+        
+        <div class="card border-0 shadow-lg rounded-4 overflow-hidden bg-white">
+          <div class="card-body p-5 text-center">
+            
+            <!-- Warning Sign -->
+            <div class="text-danger mb-4">
+              <i class="bi bi-exclamation-triangle-fill display-2"></i>
+            </div>
+            
+            <h3 class="fw-bold text-dark mb-2">Confirm Delete Designation</h3>
+            <p class="text-secondary mb-4">
+              Are you sure you want to delete the designation <strong class="text-danger">{{ designation.designation_name }}</strong>? 
+              This will mark it as inactive and prevent mapping to future employees.
+            </p>
+
+            <!-- Warnings Info Box -->
+            <div class="alert alert-warning border-0 rounded-3 text-start small mb-4">
+              <div class="d-flex">
+                <i class="bi bi-info-circle-fill me-2 fs-5"></i>
+                <div>
+                  <strong>Attention:</strong> This is a soft-delete operation. Active database links will not be permanently deleted, but this role title will be hidden from dropdown selectors across the system.
+                </div>
+              </div>
+            </div>
+
+            <!-- Form Actions -->
+            <form method="post">
+              {% csrf_token %}
+              <div class="d-flex justify-content-center gap-3">
+                <button type="submit" class="btn btn-danger btn-lg px-5 py-3 rounded-3 fw-semibold shadow-sm">
+                  <i class="bi bi-trash-fill me-2"></i>Yes, Delete Designation
+                </button>
+                <a href="{% url 'designations:list' %}" class="btn btn-outline-secondary btn-lg px-5 py-3 rounded-3 fw-semibold">
+                  Cancel
+                </a>
+              </div>
+            </form>
+
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+</div>
+{% endblock %}

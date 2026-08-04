@@ -1,0 +1,94 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="row gx-4">
+  <!-- Sidebar Navigation -->
+  <div class="col-xl-3 col-lg-4 mb-4">
+    {% include 'includes/sidebar.html' %}
+  </div>
+
+  <!-- Content Column -->
+  <div class="col-xl-9 col-lg-8">
+    
+    <!-- Top Navbar Area -->
+    <div class="mb-4">
+      {% include 'includes/navbar.html' %}
+    </div>
+
+    <!-- Breadcrumbs -->
+    <nav aria-label="breadcrumb" class="mb-4">
+      <ol class="breadcrumb bg-white px-3 py-2 rounded-3 shadow-sm">
+        <li class="breadcrumb-item"><a href="/" class="text-decoration-none"><i class="bi bi-house-door-fill"></i> Home</a></li>
+        <li class="breadcrumb-item"><a href="{% url 'employees:assignments_list' %}" class="text-decoration-none">Project Mappings</a></li>
+        <li class="breadcrumb-item active" aria-current="page">{% if object %}Edit{% else %}Map{% endif %} Assignment</li>
+      </ol>
+    </nav>
+
+    <!-- Form Card -->
+    <div class="card border-0 shadow-sm rounded-4 overflow-hidden bg-white">
+      <div class="card-header bg-dark text-white p-4">
+        <div class="d-flex align-items-center gap-3">
+          <div class="bg-primary text-white rounded-3 d-flex align-items-center justify-content-center" style="width: 48px; height: 48px;">
+            <i class="bi bi-link-45deg fs-4"></i>
+          </div>
+          <div>
+            <h4 class="fw-bold text-white mb-0">{% if object %}Edit Assignment Details{% else %}Map Project Assignment{% endif %}</h4>
+            <p class="text-white-50 mb-0 small">Link staff members to active corporate projects and specify their specific roles.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="card-body p-5">
+        <form method="post" class="needs-validation" novalidate>
+          {% csrf_token %}
+          
+          <div class="mb-4">
+            <h5 class="fw-bold text-dark mb-3 border-bottom pb-2">Assignment Details</h5>
+            
+            <div class="form-floating mb-3">
+              {{ form.employee }}
+              <label for="{{ form.employee.id_for_label }}">Select Employee <span class="text-danger">*</span></label>
+              {% if form.employee.errors %}
+                <div class="invalid-feedback d-block">{{ form.employee.errors.0 }}</div>
+              {% endif %}
+            </div>
+
+            <div class="form-floating mb-3">
+              {{ form.project }}
+              <label for="{{ form.project.id_for_label }}">Select Project <span class="text-danger">*</span></label>
+              {% if form.project.errors %}
+                <div class="invalid-feedback d-block">{{ form.project.errors.0 }}</div>
+              {% endif %}
+            </div>
+
+            <div class="form-floating mb-3">
+              <input type="text" name="role" id="{{ form.role.id_for_label }}" class="form-control form-control-lg {% if form.role.errors %}is-invalid{% endif %}" placeholder="e.g. Lead Developer" value="{{ form.role.value|default:'' }}" required>
+              <label for="{{ form.role.id_for_label }}">Employee Role in Project <span class="text-danger">*</span></label>
+              <div class="form-text text-muted small">E.g. Full-Stack Developer, Project Owner, Scrum Master, UI Designer.</div>
+              {% if form.role.errors %}
+                <div class="invalid-feedback d-block">{{ form.role.errors.0 }}</div>
+              {% endif %}
+            </div>
+
+          </div>
+
+          <!-- Buttons Group -->
+          <div class="d-flex flex-wrap gap-2 pt-3 border-top">
+            <button type="submit" class="btn btn-primary btn-lg rounded-3 px-4 py-2 fw-semibold">
+              <i class="bi bi-link-45deg me-2"></i>Save Assignment
+            </button>
+            <a href="{% url 'employees:assignments_list' %}" class="btn btn-outline-secondary btn-lg rounded-3 px-4 py-2 fw-semibold">
+              Cancel
+            </a>
+            <button type="reset" class="btn btn-light btn-lg rounded-3 px-4 py-2 text-secondary ms-auto">
+              Reset
+            </button>
+          </div>
+
+        </form>
+      </div>
+    </div>
+
+  </div>
+</div>
+{% endblock %}

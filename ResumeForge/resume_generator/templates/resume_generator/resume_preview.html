@@ -1,0 +1,172 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="row gx-4">
+  <!-- Sidebar Navigation Column (hidden on print) -->
+  <div class="col-xl-3 col-lg-4 mb-4 d-print-none">
+    {% include 'includes/sidebar.html' %}
+  </div>
+
+  <!-- Content Column -->
+  <div class="col-xl-9 col-lg-8">
+    
+    <!-- Top Navbar Area (hidden on print) -->
+    <div class="mb-4 d-print-none">
+      {% include 'includes/navbar.html' %}
+    </div>
+
+    <!-- Actions Bar (hidden on print) -->
+    <div class="card border-0 shadow-sm rounded-4 mb-4 bg-white d-print-none">
+      <div class="card-body p-4 d-flex flex-wrap align-items-center justify-content-between gap-3">
+        <div>
+          <h5 class="fw-bold text-dark mb-1">Resume Actions</h5>
+          <p class="text-muted small mb-0">Review the printable preview or download in corporate formats.</p>
+        </div>
+        <div class="d-flex gap-2">
+          <a href="{% url 'employees:list' %}" class="btn btn-outline-secondary rounded-3 px-3">
+            <i class="bi bi-arrow-left me-1"></i>Back to Staff
+          </a>
+          <a href="{% url 'resume_generator:download' employee.pk %}" class="btn btn-primary rounded-3 px-3">
+            <i class="bi bi-file-earmark-word me-1"></i>Download Word
+          </a>
+          <a href="{% url 'resume_generator:download_pdf' employee.pk %}" class="btn btn-danger rounded-3 px-3">
+            <i class="bi bi-file-earmark-pdf me-1"></i>Download PDF
+          </a>
+          <button onclick="window.print()" class="btn btn-outline-primary rounded-3 px-3">
+            <i class="bi bi-printer me-1"></i>Print CV
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Simulated A4 Paper CV Container -->
+    <div class="card border-0 shadow-sm rounded-4 overflow-hidden bg-white mb-4 cv-card">
+      <div class="card-body p-5">
+        
+        <!-- Resume Header (Name left, Designation right) -->
+        <div class="d-flex justify-content-between align-items-baseline mb-2 pb-2 border-bottom border-secondary border-opacity-25">
+          <h2 class="fw-bold text-dark mb-0 m-0" style="font-family: Arial, Helvetica, sans-serif; font-size: 1.8rem; letter-spacing: -0.5px;">
+            {{ employee.full_name }}
+          </h2>
+          <span class="text-secondary fw-bold" style="font-family: Arial, Helvetica, sans-serif; font-size: 1.05rem;">
+            Designation: {{ employee.designation.designation_name|default:'Software Developer' }}
+          </span>
+        </div>
+
+        <div class="cv-content-body mt-4" style="font-family: Arial, Helvetica, sans-serif; font-size: 0.95rem; line-height: 1.5; color: #333;">
+          
+          <!-- 1. Professional Summary -->
+          <div class="mb-4">
+            <h5 class="fw-bold text-dark mb-2" style="font-size: 1.15rem;">Professional Summary:</h5>
+            <ul class="list-unstyled ps-0 mb-0">
+              {% if summary_bullets %}
+                {% for bullet in summary_bullets %}
+                  <li class="d-flex align-items-start mb-1">
+                    <span class="me-2 text-dark">•</span>
+                    <div>{{ bullet }}</div>
+                  </li>
+                {% endfor %}
+              {% else %}
+                <li class="text-muted small">No professional summary bullet points configured.</li>
+              {% endif %}
+            </ul>
+          </div>
+
+          <!-- 2. Technical Skill Set -->
+          <div class="mb-4">
+            <h5 class="fw-bold text-dark mb-2" style="font-size: 1.15rem;">Technical Skill Set:</h5>
+            <ul class="list-unstyled ps-0 mb-0">
+              <li class="d-flex align-items-start mb-1">
+                <span class="me-2 text-dark">•</span>
+                <div><strong>Coding:</strong> {{ coding_skills }}</div>
+              </li>
+              <li class="d-flex align-items-start mb-1">
+                <span class="me-2 text-dark">•</span>
+                <div><strong>Tools:</strong> {{ tools }}</div>
+              </li>
+            </ul>
+          </div>
+
+          <!-- 3. Professional Projects -->
+          <div class="mb-4">
+            <h5 class="fw-bold text-dark mb-2" style="font-size: 1.15rem;">Professional Projects</h5>
+            
+            {% if projects %}
+              {% for proj in projects %}
+                <div class="mb-3">
+                  <!-- Project Title header -->
+                  <h6 class="fw-bold text-dark mb-2" style="font-size: 1rem;">
+                    Project {{ proj.index }}: {{ proj.name }}
+                  </h6>
+                  
+                  <!-- Details Bullets list -->
+                  <ul class="list-unstyled ps-0 mb-0">
+                    <li class="d-flex align-items-start mb-1">
+                      <span class="me-2 text-dark">•</span>
+                      <div><strong>Technology used:</strong> {{ proj.tech_used }}</div>
+                    </li>
+                    <li class="d-flex align-items-start mb-1">
+                      <span class="me-2 text-dark">•</span>
+                      <div><strong>Description:</strong> {{ proj.description }}</div>
+                    </li>
+                    <li class="d-flex align-items-start mb-1">
+                      <span class="me-2 text-dark">•</span>
+                      <div><strong>Role and Responsibilities:</strong></div>
+                    </li>
+                    
+                    <!-- Nested Responsibilities Bullets -->
+                    {% if proj.responsibilities %}
+                      <li class="ps-4">
+                        <ul class="list-unstyled ps-0 mb-0">
+                          {% for resp in proj.responsibilities %}
+                            <li class="d-flex align-items-start mb-1 text-secondary">
+                              <span class="me-2 text-secondary">•</span>
+                              <div>{{ resp }}</div>
+                            </li>
+                          {% endfor %}
+                        </ul>
+                      </li>
+                    {% else %}
+                      <li class="ps-4 d-flex align-items-start text-secondary small">
+                        <span class="me-2">•</span>
+                        <div>Worked as {{ proj.role }}.</div>
+                      </li>
+                    {% endif %}
+                  </ul>
+                </div>
+              {% endfor %}
+            {% else %}
+              <div class="text-muted small border rounded-3 p-3 bg-light text-center">
+                <i class="bi bi-info-circle me-1"></i>No project assignments available.
+              </div>
+            {% endif %}
+          </div>
+
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<style>
+  .cv-card {
+    border: 1px solid rgba(0,0,0,0.08) !important;
+  }
+  @media print {
+    body {
+      background-color: #ffffff !important;
+      color: #000000 !important;
+    }
+    .cv-card {
+      border: 0 !important;
+      box-shadow: none !important;
+      border-radius: 0 !important;
+    }
+    .card-body {
+      padding: 0 !important;
+    }
+  }
+</style>
+{% endblock %}

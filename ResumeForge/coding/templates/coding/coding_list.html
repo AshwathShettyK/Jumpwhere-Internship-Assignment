@@ -1,0 +1,186 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="row gx-4">
+  <!-- Sidebar Navigation -->
+  <div class="col-xl-3 col-lg-4 mb-4">
+    {% include 'includes/sidebar.html' %}
+  </div>
+
+  <!-- Content Column -->
+  <div class="col-xl-9 col-lg-8">
+    
+    <!-- Top Navbar Area -->
+    <div class="mb-4">
+      {% include 'includes/navbar.html' %}
+    </div>
+
+    <!-- Breadcrumbs -->
+    <nav aria-label="breadcrumb" class="mb-4">
+      <ol class="breadcrumb bg-white px-3 py-2 rounded-3 shadow-sm">
+        <li class="breadcrumb-item"><a href="/" class="text-decoration-none"><i class="bi bi-house-door-fill"></i> Home</a></li>
+        <li class="breadcrumb-item active" aria-current="page">Coding Skills Registry</li>
+      </ol>
+    </nav>
+
+    <!-- Header Section -->
+    <div class="d-flex flex-column flex-sm-row justify-content-between align-items-sm-center gap-3 mb-4">
+      <div>
+        <h3 class="fw-bold text-dark mb-1">Programming Languages & Technologies</h3>
+        <p class="text-secondary small mb-0">Manage reusable coding skills for project stack maps and employee profiles.</p>
+      </div>
+      <a href="{% url 'coding:create' %}" class="btn btn-primary btn-lg shadow-sm rounded-3 py-2 px-4 fw-semibold">
+        <i class="bi bi-plus-lg me-2"></i>Create Coding Skill
+      </a>
+    </div>
+
+    <!-- Filter/Search Panel -->
+    <div class="card border-0 shadow-sm rounded-4 mb-4 bg-white">
+      <div class="card-body p-4">
+        <form method="get" class="row g-3 align-items-end">
+          <!-- Search box -->
+          <div class="col-md-5">
+            <label class="form-label fw-semibold text-secondary small">Search Skill Name</label>
+            <div class="input-group">
+              <span class="input-group-text bg-light border-end-0 text-muted"><i class="bi bi-search"></i></span>
+              <input type="text" name="search" class="form-control bg-light border-start-0 ps-0" value="{{ search }}" placeholder="Type to search coding skills...">
+            </div>
+          </div>
+          
+          <!-- Status Dropdown -->
+          <div class="col-md-3">
+            <label class="form-label fw-semibold text-secondary small">Status Filter</label>
+            <select name="status" class="form-select bg-light">
+              <option value="">All Statuses</option>
+              <option value="active" {% if status_filter == 'active' %}selected{% endif %}>Active</option>
+              <option value="inactive" {% if status_filter == 'inactive' %}selected{% endif %}>Inactive</option>
+            </select>
+          </div>
+          
+          <!-- Actions -->
+          <div class="col-md-4 d-flex gap-2">
+            <button class="btn btn-primary w-100 py-2 fw-medium" type="submit">
+              <i class="bi bi-funnel me-2"></i>Apply Filters
+            </button>
+            <a class="btn btn-outline-secondary w-100 py-2 fw-medium" href="{% url 'coding:list' %}">
+              <i class="bi bi-arrow-counterclockwise me-2"></i>Reset
+            </a>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <!-- Data Table Card -->
+    <div class="card border-0 shadow-sm rounded-4 overflow-hidden bg-white mb-4">
+      
+      <!-- Card Header Stats -->
+      <div class="card-header bg-white border-0 py-3 px-4 d-flex justify-content-between align-items-center">
+        <span class="text-secondary fw-semibold small">
+          Showing {% if object_list %}{{ object_list.count }}{% else %}0{% endif %} of {{ page_obj.paginator.count|default:codings.count }} total skills
+        </span>
+      </div>
+
+      <div class="card-body p-0">
+        <div class="table-responsive">
+          <table class="table table-hover align-middle mb-0">
+            <thead class="table-light">
+              <tr style="font-size: 0.8rem; text-transform: uppercase; color: var(--text-muted);">
+                <th class="ps-4" style="width: 80px;">ID</th>
+                <th>Skill Name</th>
+                <th>Description</th>
+                <th>Status</th>
+                <th>Created</th>
+                <th class="pe-4 text-end" style="width: 160px;">Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for coding in codings %}
+                <tr style="font-size: 0.9rem;">
+                  <td class="ps-4 fw-semibold text-secondary">#{{ coding.pk }}</td>
+                  <td class="fw-bold text-dark"><i class="bi bi-code-square text-primary me-2"></i>{{ coding.coding_name }}</td>
+                  <td class="text-muted text-truncate" style="max-width: 250px;">
+                    {{ coding.description|default:'—' }}
+                  </td>
+                  <td>
+                    {% if coding.status == 'active' %}
+                      <span class="badge bg-success-subtle text-success rounded-pill px-3 py-1">Active</span>
+                    {% else %}
+                      <span class="badge bg-secondary-subtle text-secondary rounded-pill px-3 py-1">Inactive</span>
+                    {% endif %}
+                  </td>
+                  <td class="text-muted">{{ coding.created_at|date:'M d, Y' }}</td>
+                  <td class="pe-4 text-end">
+                    <div class="d-inline-flex gap-1">
+                      <a href="{% url 'coding:detail' coding.pk %}" class="btn btn-sm btn-outline-secondary" title="View details">
+                        <i class="bi bi-eye"></i>
+                      </a>
+                      <a href="{% url 'coding:edit' coding.pk %}" class="btn btn-sm btn-outline-primary" title="Edit skill">
+                        <i class="bi bi-pencil"></i>
+                      </a>
+                      <a href="{% url 'coding:delete' coding.pk %}" class="btn btn-sm btn-outline-danger" title="Delete skill">
+                        <i class="bi bi-trash"></i>
+                      </a>
+                    </div>
+                  </td>
+                </tr>
+              {% empty %}
+                <!-- Empty State -->
+                <tr>
+                  <td colspan="6" class="text-center py-5">
+                    <div class="text-muted mb-3"><i class="bi bi-code-slash display-4 text-light"></i></div>
+                    <h5 class="fw-bold text-dark mb-1">No Coding Skills Found</h5>
+                    <p class="text-muted small mb-3">No skills matched your search criteria or the database is currently empty.</p>
+                    <a href="{% url 'coding:create' %}" class="btn btn-sm btn-primary px-4 py-2 rounded-3 fw-medium">
+                      Create First Record
+                    </a>
+                  </td>
+                </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- Pagination -->
+    {% if is_paginated %}
+      <nav aria-label="Page navigation" class="mt-4">
+        <ul class="pagination justify-content-center gap-1 border-0">
+          
+          {% if page_obj.has_previous %}
+            <li class="page-item">
+              <a class="page-link rounded-3 border-0 bg-white shadow-sm text-secondary" href="?page={{ page_obj.previous_page_number }}&search={{ search }}&status={{ status_filter }}">
+                <i class="bi bi-chevron-left"></i>
+              </a>
+            </li>
+          {% else %}
+            <li class="page-item disabled"><span class="page-link rounded-3 border-0 bg-light text-muted"><i class="bi bi-chevron-left"></i></span></li>
+          {% endif %}
+
+          {% for num in paginator.page_range %}
+            {% if num == page_obj.number %}
+              <li class="page-item active"><span class="page-link rounded-3 border-0 shadow-sm fw-bold">{{ num }}</span></li>
+            {% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %}
+              <li class="page-item">
+                <a class="page-link rounded-3 border-0 bg-white shadow-sm text-secondary" href="?page={{ num }}&search={{ search }}&status={{ status_filter }}">{{ num }}</a>
+              </li>
+            {% endif %}
+          {% endfor %}
+
+          {% if page_obj.has_next %}
+            <li class="page-item">
+              <a class="page-link rounded-3 border-0 bg-white shadow-sm text-secondary" href="?page={{ page_obj.next_page_number }}&search={{ search }}&status={{ status_filter }}">
+                <i class="bi bi-chevron-right"></i>
+              </a>
+            </li>
+          {% else %}
+            <li class="page-item disabled"><span class="page-link rounded-3 border-0 bg-light text-muted"><i class="bi bi-chevron-right"></i></span></li>
+          {% endif %}
+          
+        </ul>
+      </nav>
+    {% endif %}
+
+  </div>
+</div>
+{% endblock %}
