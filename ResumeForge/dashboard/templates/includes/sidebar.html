@@ -1,0 +1,82 @@
+<aside class="card border-0 shadow-sm rounded-4 overflow-hidden mb-4 sidebar-card">
+  <!-- Brand Area -->
+  <div class="p-4 text-center bg-dark text-white">
+    <div class="mb-2">
+      <span class="fs-1 text-primary"><i class="bi bi-file-earmark-pdf-fill"></i></span>
+    </div>
+    <h5 class="fw-bold mb-0 text-white">ResumeForge</h5>
+    <span class="badge bg-primary-subtle text-primary border border-primary-subtle rounded-pill px-3 py-1 mt-2 font-monospace" style="font-size: 0.7rem;">HR ADMIN PORTAL</span>
+  </div>
+
+  <!-- Navigation List -->
+  <div class="card-body p-3 bg-white">
+    <nav class="nav flex-column gap-1">
+      
+      <a class="nav-link d-flex align-items-center rounded-3 px-3 py-2 fw-medium {% if request.path == '/' or 'dashboard' in request.path %}bg-primary text-white active-link{% else %}text-secondary sidebar-link{% endif %}" href="/">
+        <i class="bi bi-speedometer2 me-3 fs-5"></i> Dashboard
+      </a>
+
+      <div class="text-uppercase text-muted fw-bold px-3 pt-3 pb-2" style="font-size: 0.65rem; letter-spacing: 0.5px;">Employee Files</div>
+      
+      <a class="nav-link d-flex align-items-center rounded-3 px-3 py-2 fw-medium {% if '/employees' in request.path and '/assignments' not in request.path %}bg-primary text-white active-link{% else %}text-secondary sidebar-link{% endif %}" href="{% url 'employees:list' %}">
+        <i class="bi bi-people me-3 fs-5"></i> Employees Registry
+      </a>
+      
+      <a class="nav-link d-flex align-items-center rounded-3 px-3 py-2 fw-medium {% if '/assignments' in request.path %}bg-primary text-white active-link{% else %}text-secondary sidebar-link{% endif %}" href="{% url 'employees:assignments_list' %}">
+        <i class="bi bi-link-45deg me-3 fs-5"></i> Project Mappings
+      </a>
+
+      <div class="text-uppercase text-muted fw-bold px-3 pt-3 pb-2" style="font-size: 0.65rem; letter-spacing: 0.5px;">Master Registries</div>
+
+      <a class="nav-link d-flex align-items-center rounded-3 px-3 py-2 fw-medium {% if '/projects' in request.path %}bg-primary text-white active-link{% else %}text-secondary sidebar-link{% endif %}" href="{% url 'projects:list' %}">
+        <i class="bi bi-kanban me-3 fs-5"></i> Corporate Projects
+      </a>
+
+      <a class="nav-link d-flex align-items-center rounded-3 px-3 py-2 fw-medium {% if '/designations' in request.path %}bg-primary text-white active-link{% else %}text-secondary sidebar-link{% endif %}" href="{% url 'designations:list' %}">
+        <i class="bi bi-briefcase me-3 fs-5"></i> Designations
+      </a>
+
+      <a class="nav-link d-flex align-items-center rounded-3 px-3 py-2 fw-medium {% if '/coding' in request.path %}bg-primary text-white active-link{% else %}text-secondary sidebar-link{% endif %}" href="{% url 'coding:list' %}">
+        <i class="bi bi-code-slash me-3 fs-5"></i> Coding Skills
+      </a>
+
+      <a class="nav-link d-flex align-items-center rounded-3 px-3 py-2 fw-medium {% if '/tools' in request.path %}bg-primary text-white active-link{% else %}text-secondary sidebar-link{% endif %}" href="{% url 'tools:list' %}">
+        <i class="bi bi-tools me-3 fs-5"></i> Developer Tools
+      </a>
+
+      <div class="text-uppercase text-muted fw-bold px-3 pt-3 pb-2" style="font-size: 0.65rem; letter-spacing: 0.5px;">Document Generator</div>
+
+      <a class="nav-link d-flex align-items-center rounded-3 px-3 py-2 fw-medium {% if '/resume-generator' in request.path %}bg-primary text-white active-link{% else %}text-secondary sidebar-link{% endif %}" href="{% url 'resume_generator:generate' %}">
+        <i class="bi bi-file-earmark-text me-3 fs-5"></i> Resume Generator
+      </a>
+
+      <!-- Session Separator -->
+      <div class="border-top my-3"></div>
+      
+      <form action="{% url 'accounts:logout' %}" method="post" class="d-inline w-100">
+        {% csrf_token %}
+        <button type="submit" class="nav-link d-flex align-items-center rounded-3 px-3 py-2 fw-medium text-danger border-0 bg-transparent w-100 sidebar-link">
+          <i class="bi bi-box-arrow-right me-3 fs-5"></i> Logout Session
+        </button>
+      </form>
+
+    </nav>
+  </div>
+</aside>
+
+<style>
+  .sidebar-card {
+    transition: all 0.3s ease;
+  }
+  .sidebar-link {
+    transition: all 0.2s ease;
+  }
+  .sidebar-link:hover {
+    background-color: #f1f5f9;
+    color: var(--primary-hover) !important;
+    transform: translateX(3px);
+  }
+  .active-link {
+    box-shadow: 0 4px 10px rgba(59, 130, 246, 0.25);
+  }
+</style>

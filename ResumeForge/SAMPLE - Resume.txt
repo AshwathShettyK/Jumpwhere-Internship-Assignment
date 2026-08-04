@@ -1,0 +1,589 @@
+FILE SAMPLE - Resume.pdf
+PAGES 2
+--- PAGE 1 ---
+  Name: Saqib Designa tion: Softw are Developer  
+Professional Summary: 
+●
+ 
+Having
+ 
+1
+ 
+year
+ 
+2
+ 
+mon ths
+ 
+total
+ 
+and
+ 
+relevant
+ 
+experience
+ 
+on
+ 
+Developmen t
+ 
+of
+ 
+Web
+ 
+Applic ations.
+ 
+ 
+●
+ 
+A
+ 
+team
+ 
+player
+ 
+with
+ 
+good
+ 
+communic ation
+ 
+skills
+ 
+and
+ 
+eagerness
+ 
+to
+ 
+shar e
+ 
+and
+ 
+gain
+ 
+knowledg e.
+ 
+ 
+●
+ 
+Experience
+ 
+in
+ 
+working
+ 
+with
+ 
+Web
+ 
+Applic ations
+ 
+Using
+ 
+Laravel
+ 
+and
+ 
+Djang o.
+ 
+ 
+●
+ 
+Working
+ 
+Knowledg e
+ 
+on
+ 
+Linux
+ 
+and
+ 
+Windo ws.
+ 
+ 
+●
+ 
+GIT
+ 
+for
+ 
+code
+ 
+manag emen t
+ 
+and
+ 
+version
+ 
+control.
+ 
+●
+ 
+ 
+integrated
+ 
+Google
+ 
+apis/t ools
+ 
+like
+ 
+Geoloc ation.
+ 
+ 
+ Technical Skill Set: 
+ 
+●
+ 
+Coding
+ 
+ 
+:
+ 
+JavaScrip t,
+ 
+Python,
+ 
+HTML
+ 
+5,
+ 
+CSS
+ 
+3,
+ 
+Vue
+ 
+js,
+ 
+Djang o
+ 
+●
+ 
+Tools
+ 
+ 
+:
+ 
+VsCode,
+ 
+Postman,
+  
+Github,
+ 
+Gitlab,
+ 
+Bitbuck et
+   
+Professional Projects   Project 1: Time tag 
+●
+ 
+Technology
+ 
+used:
+ 
+Laravel,
+ 
+Mysql,
+  
+Javascrip t,
+ 
+Jquer y,
+ 
+Ajax,
+ 
+Html,
+ 
+Css
+ 
+&
+ 
+Boots trap.
+ 
+●
+ 
+Descrip tion:
+ 
+Time
+ 
+tag 
+ 
+is
+ 
+a
+ 
+website
+ 
+used
+ 
+to
+ 
+fill
+ 
+emplo yee
+ 
+timeshee ts.
+ 
+Also ,
+ 
+the
+ 
+admin
+ 
+has
+ 
+an
+ 
+option
+ 
+to
+ 
+check
+ 
+all
+ 
+emplo yees'
+ 
+timeshee ts,
+ 
+filtering
+ 
+emplo yees
+ 
+timeshee ts
+ 
+based
+ 
+on
+ 
+filters
+ 
+and
+ 
+exporting
+ 
+timeshee ts.
+ 
+ 
+●
+ 
+Role
+ 
+and
+ 
+Responsibilities:
+ 
+●
+ 
+Python
+ 
+developer .
+ 
+●
+ 
+Developed
+ 
+different
+ 
+panels
+ 
+based
+ 
+on
+ 
+user
+ 
+role.
+ 
+●
+ 
+Timeshee t
+ 
+filtration
+ 
+based
+ 
+on
+ 
+date.
+ 
+●
+ 
+Export
+ 
+timeshee t.
+ 
+●
+ 
+CRUD
+ 
+oper ations.
+ 
+●
+ 
+UI
+ 
+implemen tation.
+  Project 2: OurShopping 
+●
+ 
+Technology
+ 
+used:
+ 
+ 
+Laravel,
+ 
+Mysql,
+  
+Javascrip t,
+ 
+Jquer y,
+ 
+Ajax,
+ 
+Html,
+ 
+Css
+ 
+&
+ 
+Boots trap.
+  
+ 
+
+
+--- PAGE 2 ---
+ 
+Descrip tion:
+ OnlineShopping
+ 
+is
+ 
+an
+ 
+e-shopping
+ 
+website
+ 
+with a wide range of customer s across USA, UK, UAE, 
+Oman,
+ 
+Qatar,
+ 
+Kuwait,
+ 
+and
+ 
+Bahr ain.
+ 
+They
+ 
+have
+ 
+a
+ 
+huge
+ 
+collection
+ 
+of
+ 
+various
+ 
+products
+ 
+so
+ 
+customer s
+ 
+can
+ 
+mak e
+ 
+the
+ 
+earth's
+ 
+biggest
+ 
+selection.  Role and Responsibilities: 
+●
+ 
+Python
+ 
+developer .
+ 
+●
+ 
+Admin
+ 
+panel
+ 
+with
+ 
+backpack(plugin).
+ 
+●
+ 
+API’s
+ 
+for
+ 
+mobile
+ 
+applic ations.
+ 
+●
+ 
+Option
+ 
+to
+ 
+add
+ 
+products
+ 
+which
+ 
+will
+ 
+be
+ 
+listed
+ 
+in
+ 
+mobile
+ 
+applic ations.
+ 
+●
+ 
+Sending
+ 
+notific ations
+ 
+for
+ 
+all
+ 
+the
+ 
+user s.
+ 
+●
+ 
+Push
+ 
+notific ations.
+    
+Project
+ 
+3:
+ 
+PickleMasala 
+●
+ 
+Technology
+ 
+used:
+ 
+ 
+Laravel,
+ 
+Mysql,
+  
+Javascrip t,
+ 
+Jquer y,
+ 
+Ajax,
+ 
+Html,
+ 
+Css
+ 
+&
+ 
+Boots trap.
+  Descrip tion: PickleMasala is a center for the authen tic flavors of India. Today, they are South India’ s favorite for 
+our
+ 
+spicy
+ 
+masalas
+ 
+and
+ 
+delicious
+ 
+products!.
+ 
+User s
+ 
+can
+ 
+order
+ 
+various
+ 
+masalas
+ 
+from
+ 
+this
+ 
+applic ation.
+  Role and Responsibilities: 
+●
+ 
+Python
+ 
+,
+ 
+Ajax,
+ 
+Jquer y,
+ 
+HTML
+ 
+developer .
+ 
+●
+ 
+Paymen t
+ 
+gateway
+ 
+:
+ 
+Razorpa y
+ 
+●
+ 
+Admin
+ 
+Panel
+ 
+using
+ 
+AdminL TE
+ 
+●
+ 
+CRUD
+ 
+Oper ations
+ 
+●
+ 
+Email
+ 
+Functionality .
+    
+ 
+
+

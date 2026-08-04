@@ -1,0 +1,197 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="row gx-4">
+  <!-- Sidebar Navigation -->
+  <div class="col-xl-3 col-lg-4 mb-4">
+    {% include 'includes/sidebar.html' %}
+  </div>
+
+  <!-- Content Column -->
+  <div class="col-xl-9 col-lg-8">
+    
+    <!-- Top Navbar Area -->
+    <div class="mb-4">
+      {% include 'includes/navbar.html' %}
+    </div>
+
+    <!-- Breadcrumbs -->
+    <nav aria-label="breadcrumb" class="mb-4">
+      <ol class="breadcrumb bg-white px-3 py-2 rounded-3 shadow-sm">
+        <li class="breadcrumb-item"><a href="/" class="text-decoration-none"><i class="bi bi-house-door-fill"></i> Home</a></li>
+        <li class="breadcrumb-item active" aria-current="page">Project Mappings</li>
+      </ol>
+    </nav>
+
+    <!-- Header Section -->
+    <div class="d-flex flex-column flex-sm-row justify-content-between align-items-sm-center gap-3 mb-4">
+      <div>
+        <h3 class="fw-bold text-dark mb-1">Employee Project Mappings</h3>
+        <p class="text-secondary small mb-0">Assign staff members to projects and track their specific timeline roles.</p>
+      </div>
+      <a href="{% url 'employees:assignments_create' %}" class="btn btn-primary btn-lg shadow-sm rounded-3 py-2 px-4 fw-semibold">
+        <i class="bi bi-link-45deg me-2"></i>Map Project Assignment
+      </a>
+    </div>
+
+    <!-- Filter/Search Panel -->
+    <div class="card border-0 shadow-sm rounded-4 mb-4 bg-white">
+      <div class="card-body p-4">
+        <form method="get" class="row g-3 align-items-end">
+          <!-- Search box -->
+          <div class="col-md-8">
+            <label class="form-label fw-semibold text-secondary small">Search Mappings</label>
+            <div class="input-group">
+              <span class="input-group-text bg-light border-end-0 text-muted"><i class="bi bi-search"></i></span>
+              <input type="text" name="search" class="form-control bg-light border-start-0 ps-0" value="{{ search }}" placeholder="Search by employee name, project name, or role title...">
+            </div>
+          </div>
+          
+          <!-- Actions -->
+          <div class="col-md-4 d-flex gap-2">
+            <button class="btn btn-primary w-100 py-2 fw-medium" type="submit">
+              <i class="bi bi-funnel me-2"></i>Filter
+            </button>
+            <a class="btn btn-outline-secondary w-100 py-2 fw-medium" href="{% url 'employees:assignments_list' %}">
+              <i class="bi bi-arrow-counterclockwise me-2"></i>Reset
+            </a>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <!-- Data Table Card -->
+    <div class="card border-0 shadow-sm rounded-4 overflow-hidden bg-white mb-4">
+      
+      <!-- Card Header Stats -->
+      <div class="card-header bg-white border-0 py-3 px-4 d-flex justify-content-between align-items-center">
+        <span class="text-secondary fw-semibold small">
+          Showing {% if object_list %}{{ object_list.count }}{% else %}0{% endif %} of {{ page_obj.paginator.count|default:assignments.count }} total mappings
+        </span>
+      </div>
+
+      <div class="card-body p-0">
+        <div class="table-responsive">
+          <table class="table table-hover align-middle mb-0">
+            <thead class="table-light">
+              <tr style="font-size: 0.8rem; text-transform: uppercase; color: var(--text-muted);">
+                <th class="ps-4" style="width: 80px;">ID</th>
+                <th>Employee</th>
+                <th>Mapped Project</th>
+                <th>Assigned Role</th>
+                <th>Project Timeline</th>
+                <th class="pe-4 text-end" style="width: 160px;">Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for assignment in assignments %}
+                <tr style="font-size: 0.9rem;">
+                  <!-- ID -->
+                  <td class="ps-4 fw-semibold text-secondary">#{{ assignment.pk }}</td>
+                  
+                  <!-- Employee Name -->
+                  <td class="fw-bold text-dark">
+                    <a href="{% url 'employees:detail' assignment.employee.pk %}" class="text-decoration-none text-dark">
+                      {{ assignment.employee.full_name }}
+                    </a>
+                    <div class="text-muted small" style="font-size: 0.75rem;">{{ assignment.employee.email }}</div>
+                  </td>
+                  
+                  <!-- Project Title -->
+                  <td class="fw-semibold text-secondary">
+                    <a href="{% url 'projects:detail' assignment.project.pk %}" class="text-decoration-none text-secondary">
+                      {{ assignment.project.project_name }}
+                    </a>
+                  </td>
+                  
+                  <!-- Assigned Role -->
+                  <td class="text-dark fw-bold">
+                    {{ assignment.role|default:'Developer / Member' }}
+                  </td>
+                  
+                  <!-- Project Timeline -->
+                  <td class="text-secondary small">
+                    {% if assignment.project.start_date %}
+                      {{ assignment.project.start_date|date:'M Y' }} — 
+                      {% if assignment.project.end_date %}{{ assignment.project.end_date|date:'M Y' }}{% else %}<span class="text-success fw-medium">Present</span>{% endif %}
+                    {% else %}
+                      —
+                    {% endif %}
+                  </td>
+                  
+                  <!-- Actions -->
+                  <td class="pe-4 text-end">
+                    <div class="d-inline-flex gap-1">
+                      <a href="{% url 'employees:assignments_detail' assignment.pk %}" class="btn btn-sm btn-outline-secondary" title="View details">
+                        <i class="bi bi-eye"></i>
+                      </a>
+                      <a href="{% url 'employees:assignments_edit' assignment.pk %}" class="btn btn-sm btn-outline-primary" title="Edit mapping">
+                        <i class="bi bi-pencil"></i>
+                      </a>
+                      <a href="{% url 'employees:assignments_delete' assignment.pk %}" class="btn btn-sm btn-outline-danger" title="Remove assignment">
+                        <i class="bi bi-trash"></i>
+                      </a>
+                    </div>
+                  </td>
+                </tr>
+              {% empty %}
+                <!-- Empty State -->
+                <tr>
+                  <td colspan="6" class="text-center py-5">
+                    <div class="text-muted mb-3"><i class="bi bi-link-45deg display-4 text-light"></i></div>
+                    <h5 class="fw-bold text-dark mb-1">No Project Mappings Found</h5>
+                    <p class="text-muted small mb-3">No mapping records matched your criteria or the mappings register is empty.</p>
+                    <a href="{% url 'employees:assignments_create' %}" class="btn btn-sm btn-primary px-4 py-2 rounded-3 fw-medium">
+                      Create First Mapping
+                    </a>
+                  </td>
+                </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- Pagination -->
+    {% if is_paginated %}
+      <nav aria-label="Page navigation" class="mt-4">
+        <ul class="pagination justify-content-center gap-1 border-0">
+          
+          {% if page_obj.has_previous %}
+            <li class="page-item">
+              <a class="page-link rounded-3 border-0 bg-white shadow-sm text-secondary" href="?page={{ page_obj.previous_page_number }}&search={{ search }}">
+                <i class="bi bi-chevron-left"></i>
+              </a>
+            </li>
+          {% else %}
+            <li class="page-item disabled"><span class="page-link rounded-3 border-0 bg-light text-muted"><i class="bi bi-chevron-left"></i></span></li>
+          {% endif %}
+
+          {% for num in paginator.page_range %}
+            {% if num == page_obj.number %}
+              <li class="page-item active"><span class="page-link rounded-3 border-0 shadow-sm fw-bold">{{ num }}</span></li>
+            {% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %}
+              <li class="page-item">
+                <a class="page-link rounded-3 border-0 bg-white shadow-sm text-secondary" href="?page={{ num }}&search={{ search }}">{{ num }}</a>
+              </li>
+            {% endif %}
+          {% endfor %}
+
+          {% if page_obj.has_next %}
+            <li class="page-item">
+              <a class="page-link rounded-3 border-0 bg-white shadow-sm text-secondary" href="?page={{ page_obj.next_page_number }}&search={{ search }}">
+                <i class="bi bi-chevron-right"></i>
+              </a>
+            </li>
+          {% else %}
+            <li class="page-item disabled"><span class="page-link rounded-3 border-0 bg-light text-muted"><i class="bi bi-chevron-right"></i></span></li>
+          {% endif %}
+          
+        </ul>
+      </nav>
+    {% endif %}
+
+  </div>
+</div>
+{% endblock %}

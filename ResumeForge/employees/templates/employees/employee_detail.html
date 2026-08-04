@@ -1,0 +1,204 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="row gx-4">
+  <!-- Sidebar Navigation -->
+  <div class="col-xl-3 col-lg-4 mb-4">
+    {% include 'includes/sidebar.html' %}
+  </div>
+
+  <!-- Content Column -->
+  <div class="col-xl-9 col-lg-8">
+    
+    <!-- Top Navbar Area -->
+    <div class="mb-4">
+      {% include 'includes/navbar.html' %}
+    </div>
+
+    <!-- Breadcrumbs -->
+    <nav aria-label="breadcrumb" class="mb-4">
+      <ol class="breadcrumb bg-white px-3 py-2 rounded-3 shadow-sm">
+        <li class="breadcrumb-item"><a href="/" class="text-decoration-none"><i class="bi bi-house-door-fill"></i> Home</a></li>
+        <li class="breadcrumb-item"><a href="{% url 'employees:list' %}" class="text-decoration-none">Employees</a></li>
+        <li class="breadcrumb-item active" aria-current="page">Employee Profile Details</li>
+      </ol>
+    </nav>
+
+    <!-- Main Profile Detail Card -->
+    <div class="card border-0 shadow-sm rounded-4 overflow-hidden bg-white mb-4">
+      <div class="card-header bg-dark text-white p-4 d-flex justify-content-between align-items-center">
+        <div class="d-flex align-items-center gap-3">
+          <div class="bg-primary text-white rounded-3 d-flex align-items-center justify-content-center" style="width: 48px; height: 48px;">
+            <i class="bi bi-person-badge fs-4"></i>
+          </div>
+          <div>
+            <h4 class="fw-bold text-white mb-0">{{ employee.full_name }}</h4>
+            <p class="text-white-50 mb-0 small">{{ employee.designation.designation_name|default:'Unassigned Designation' }}</p>
+          </div>
+        </div>
+        <div class="d-flex gap-2">
+          <a href="{% url 'employees:edit' employee.pk %}" class="btn btn-primary rounded-3 px-3">
+            <i class="bi bi-pencil-fill me-2"></i>Edit Profile
+          </a>
+          <a href="{% url 'resume_generator:generate' %}?employee={{ employee.pk }}" class="btn btn-info text-white rounded-3 px-3">
+            <i class="bi bi-file-earmark-pdf-fill me-2"></i>Preview Resume
+          </a>
+        </div>
+      </div>
+
+      <div class="card-body p-4">
+        
+        <div class="row g-4 pb-4 border-bottom">
+          <!-- Designation & Contact Info -->
+          <div class="col-md-4">
+            <label class="text-uppercase text-muted fw-bold small d-block mb-1" style="font-size: 0.7rem; letter-spacing: 0.5px;">Corporate Email</label>
+            <div class="fw-bold text-dark"><i class="bi bi-envelope me-2 text-primary"></i>{{ employee.email }}</div>
+          </div>
+          <div class="col-md-4">
+            <label class="text-uppercase text-muted fw-bold small d-block mb-1" style="font-size: 0.7rem; letter-spacing: 0.5px;">Contact Phone</label>
+            <div class="fw-bold text-dark"><i class="bi bi-telephone me-2 text-primary"></i>{{ employee.phone|default:'Not provided' }}</div>
+          </div>
+          <div class="col-md-4">
+            <label class="text-uppercase text-muted fw-bold small d-block mb-1" style="font-size: 0.7rem; letter-spacing: 0.5px;">Employment Status</label>
+            <div>
+              {% if employee.status == 'active' %}
+                <span class="badge bg-success-subtle text-success rounded-pill px-3 py-1">Active</span>
+              {% else %}
+                <span class="badge bg-secondary-subtle text-secondary rounded-pill px-3 py-1">Inactive</span>
+              {% endif %}
+            </div>
+          </div>
+
+          <!-- Professional Summary Bullets -->
+          <div class="col-12">
+            <label class="text-uppercase text-muted fw-bold small d-block mb-2" style="font-size: 0.7rem; letter-spacing: 0.5px;">Professional Summary</label>
+            <div class="p-3 bg-light rounded-3">
+              {% if employee.professional_summary %}
+                <ul class="list-group list-group-flush mb-0">
+                  {% for line in employee.professional_summary.splitlines %}
+                    {% if line.strip %}
+                      <li class="list-group-item border-0 bg-transparent px-0 py-1 text-secondary"><i class="bi bi-dot fs-4 text-primary align-middle"></i>{{ line }}</li>
+                    {% endif %}
+                  {% endfor %}
+                </ul>
+              {% else %}
+                <span class="text-muted small">No professional summary bullets configured. Click Edit to add summary pointers.</span>
+              {% endif %}
+            </div>
+          </div>
+
+          <!-- Technical Skills -->
+          <div class="col-md-6">
+            <label class="text-uppercase text-muted fw-bold small d-block mb-2" style="font-size: 0.7rem; letter-spacing: 0.5px;">Coding Skills Map</label>
+            <div class="d-flex flex-wrap gap-1 p-3 border rounded-3 bg-white">
+              {% for skill in employee.coding_skills.all %}
+                <span class="badge bg-primary-subtle text-primary border border-primary-subtle rounded-pill px-3 py-2 fs-7"><i class="bi bi-code-slash me-1"></i>{{ skill.coding_name }}</span>
+              {% empty %}
+                <span class="text-muted small">No coding skills configured.</span>
+              {% endfor %}
+            </div>
+          </div>
+
+          <div class="col-md-6">
+            <label class="text-uppercase text-muted fw-bold small d-block mb-2" style="font-size: 0.7rem; letter-spacing: 0.5px;">Developer Tools Map</label>
+            <div class="d-flex flex-wrap gap-1 p-3 border rounded-3 bg-white">
+              {% for tool in employee.tools.all %}
+                <span class="badge bg-info-subtle text-info border border-info-subtle rounded-pill px-3 py-2 fs-7"><i class="bi bi-tools me-1"></i>{{ tool.tool_name }}</span>
+              {% empty %}
+                <span class="text-muted small">No developer tools configured.</span>
+              {% endfor %}
+            </div>
+          </div>
+
+        </div>
+
+        <!-- Mapped Projects list -->
+        <div class="mt-4 pb-4 border-bottom">
+          <div class="d-flex justify-content-between align-items-center mb-3">
+            <h5 class="fw-bold text-dark mb-0"><i class="bi bi-kanban me-2 text-success"></i>Project Timeline Assignments</h5>
+            <a href="{% url 'employees:assignments_create' %}?employee={{ employee.pk }}" class="btn btn-sm btn-outline-success rounded-3 px-3">
+              <i class="bi bi-plus-lg me-1"></i>Add Assignment
+            </a>
+          </div>
+
+          <div class="table-responsive rounded-3 border">
+            <table class="table table-hover align-middle mb-0">
+              <thead class="table-light">
+                <tr style="font-size: 0.75rem; text-transform: uppercase;">
+                  <th class="ps-3">Project Title</th>
+                  <th>Timeline</th>
+                  <th>Assigned Role</th>
+                  <th>Status</th>
+                  <th class="pe-3 text-end" style="width: 120px;">Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for assignment in assignments %}
+                  <tr style="font-size: 0.85rem;">
+                    <td class="ps-3 fw-bold text-dark">{{ assignment.project.project_name }}</td>
+                    <td class="text-secondary small">
+                      {% if assignment.project.start_date %}
+                        {{ assignment.project.start_date|date:'M Y' }} — 
+                        {% if assignment.project.end_date %}{{ assignment.project.end_date|date:'M Y' }}{% else %}<span class="text-success">Present</span>{% endif %}
+                      {% else %}
+                        —
+                      {% endif %}
+                    </td>
+                    <td class="text-secondary fw-semibold">{{ assignment.role|default:'Developer / Member' }}</td>
+                    <td>
+                      {% if assignment.project.status == 'active' %}
+                        <span class="badge bg-success-subtle text-success rounded-pill px-2 py-0.5">Active</span>
+                      {% else %}
+                        <span class="badge bg-secondary-subtle text-secondary rounded-pill px-2 py-0.5">Closed</span>
+                      {% endif %}
+                    </td>
+                    <td class="pe-3 text-end">
+                      <div class="d-inline-flex gap-1">
+                        <a href="{% url 'employees:assignments_edit' assignment.pk %}" class="btn btn-sm btn-outline-primary" title="Edit role"><i class="bi bi-pencil"></i></a>
+                        <a href="{% url 'employees:assignments_delete' assignment.pk %}" class="btn btn-sm btn-outline-danger" title="Remove assignment"><i class="bi bi-trash"></i></a>
+                      </div>
+                    </td>
+                  </tr>
+                {% empty %}
+                  <tr>
+                    <td colspan="5" class="text-center text-muted py-3">No active project assignments. Click "Add Assignment" to map a project.</td>
+                  </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- Audit Details Block -->
+        <h5 class="fw-bold text-dark mt-4 mb-3"><i class="bi bi-clock-history me-2 text-primary"></i>Audit Trail</h5>
+        <div class="row g-3">
+          <div class="col-sm-6">
+            <div class="card bg-light border-0 rounded-3 p-3">
+              <div class="small text-muted mb-1">Created By</div>
+              <div class="fw-semibold text-dark">{{ employee.created_by.username|default:'System Admin' }}</div>
+              <div class="small text-muted mt-2">Date Created</div>
+              <div class="fw-semibold text-dark">{{ employee.created_at|date:'M d, Y H:i' }}</div>
+            </div>
+          </div>
+          <div class="col-sm-6">
+            <div class="card bg-light border-0 rounded-3 p-3">
+              <div class="small text-muted mb-1">Last Updated By</div>
+              <div class="fw-semibold text-dark">{{ employee.updated_by.username|default:'System Admin' }}</div>
+              <div class="small text-muted mt-2">Last Update Date</div>
+              <div class="fw-semibold text-dark">{{ employee.updated_at|date:'M d, Y H:i' }}</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Navigation Buttons -->
+        <div class="d-flex gap-2 mt-4 pt-3 border-top">
+          <a href="{% url 'employees:list' %}" class="btn btn-outline-secondary rounded-3 px-4">
+            <i class="bi bi-arrow-left-short me-1"></i>Back to List
+          </a>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+{% endblock %}

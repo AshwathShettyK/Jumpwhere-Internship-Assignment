@@ -1,0 +1,98 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="row gx-4">
+  <!-- Sidebar Navigation -->
+  <div class="col-xl-3 col-lg-4 mb-4">
+    {% include 'includes/sidebar.html' %}
+  </div>
+
+  <!-- Content Column -->
+  <div class="col-xl-9 col-lg-8">
+    
+    <!-- Top Navbar Area -->
+    <div class="mb-4">
+      {% include 'includes/navbar.html' %}
+    </div>
+
+    <!-- Breadcrumbs -->
+    <nav aria-label="breadcrumb" class="mb-4">
+      <ol class="breadcrumb bg-white px-3 py-2 rounded-3 shadow-sm">
+        <li class="breadcrumb-item"><a href="/" class="text-decoration-none"><i class="bi bi-house-door-fill"></i> Home</a></li>
+        <li class="breadcrumb-item"><a href="{% url 'designations:list' %}" class="text-decoration-none">Designations</a></li>
+        <li class="breadcrumb-item active" aria-current="page">{% if object %}Edit{% else %}Create{% endif %} Designation</li>
+      </ol>
+    </nav>
+
+    <!-- Form Card -->
+    <div class="card border-0 shadow-sm rounded-4 overflow-hidden bg-white">
+      <div class="card-header bg-dark text-white p-4">
+        <div class="d-flex align-items-center gap-3">
+          <div class="bg-primary text-white rounded-3 d-flex align-items-center justify-content-center" style="width: 48px; height: 48px;">
+            <i class="bi bi-briefcase fs-4"></i>
+          </div>
+          <div>
+            <h4 class="fw-bold text-white mb-0">{% if object %}Edit Designation{% else %}Create New Designation{% endif %}</h4>
+            <p class="text-white-50 mb-0 small">Please define designation metadata and status.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="card-body p-5">
+        <form method="post" class="needs-validation" novalidate>
+          {% csrf_token %}
+          
+          <!-- Field Group 1: General Info -->
+          <div class="mb-4">
+            <h5 class="fw-bold text-dark mb-3 border-bottom pb-2">Designation Information</h5>
+            
+            <div class="form-floating mb-3">
+              <input type="text" name="designation_name" id="{{ form.designation_name.id_for_label }}" class="form-control form-control-lg {% if form.designation_name.errors %}is-invalid{% endif %}" placeholder="e.g. Senior Software Architect" value="{{ form.designation_name.value|default:'' }}" required>
+              <label for="{{ form.designation_name.id_for_label }}">Designation Name <span class="text-danger">*</span></label>
+              <div class="form-text text-muted small">Specify the official job title matching company payroll.</div>
+              {% if form.designation_name.errors %}
+                <div class="invalid-feedback d-block">{{ form.designation_name.errors.0 }}</div>
+              {% endif %}
+            </div>
+
+            <div class="form-floating mb-3">
+              <textarea name="description" id="{{ form.description.id_for_label }}" class="form-control form-control-lg {% if form.description.errors %}is-invalid{% endif %}" placeholder="Write job description details..." style="height: 120px;">{{ form.description.value|default:'' }}</textarea>
+              <label for="{{ form.description.id_for_label }}">Job Description / Role Details</label>
+              {% if form.description.errors %}
+                <div class="invalid-feedback d-block">{{ form.description.errors.0 }}</div>
+              {% endif %}
+            </div>
+
+            <div class="form-floating mb-3">
+              <select name="status" id="{{ form.status.id_for_label }}" class="form-select form-control-lg {% if form.status.errors %}is-invalid{% endif %}">
+                <option value="active" {% if form.status.value == 'active' %}selected{% endif %}>Active (Allow mappings)</option>
+                <option value="inactive" {% if form.status.value == 'inactive' %}selected{% endif %}>Inactive (Block mappings)</option>
+              </select>
+              <label for="{{ form.status.id_for_label }}">Registry Status <span class="text-danger">*</span></label>
+              {% if form.status.errors %}
+                <div class="invalid-feedback d-block">{{ form.status.errors.0 }}</div>
+              {% endif %}
+            </div>
+
+          </div>
+
+          <!-- Buttons Group -->
+          <div class="d-flex flex-wrap gap-2 pt-3 border-top">
+            <button type="submit" class="btn btn-primary btn-lg rounded-3 px-4 py-2fw-semibold">
+              <i class="bi bi-save me-2"></i>Save Designation
+            </button>
+            <a href="{% url 'designations:list' %}" class="btn btn-outline-secondary btn-lg rounded-3 px-4 py-2 fw-semibold">
+              Cancel
+            </a>
+            <button type="reset" class="btn btn-light btn-lg rounded-3 px-4 py-2 text-secondary ms-auto">
+              Reset Fields
+            </button>
+          </div>
+
+        </form>
+      </div>
+    </div>
+
+  </div>
+</div>
+{% endblock %}

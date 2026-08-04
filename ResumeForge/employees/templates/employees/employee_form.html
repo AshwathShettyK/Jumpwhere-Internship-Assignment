@@ -1,0 +1,268 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="row gx-4">
+  <!-- Sidebar Navigation -->
+  <div class="col-xl-3 col-lg-4 mb-4">
+    {% include 'includes/sidebar.html' %}
+  </div>
+
+  <!-- Content Column -->
+  <div class="col-xl-9 col-lg-8">
+    
+    <!-- Top Navbar Area -->
+    <div class="mb-4">
+      {% include 'includes/navbar.html' %}
+    </div>
+
+    <!-- Breadcrumbs -->
+    <nav aria-label="breadcrumb" class="mb-4">
+      <ol class="breadcrumb bg-white px-3 py-2 rounded-3 shadow-sm">
+        <li class="breadcrumb-item"><a href="/" class="text-decoration-none"><i class="bi bi-house-door-fill"></i> Home</a></li>
+        <li class="breadcrumb-item"><a href="{% url 'employees:list' %}" class="text-decoration-none">Employees</a></li>
+        <li class="breadcrumb-item active" aria-current="page">{% if object %}Edit{% else %}Create{% endif %} Employee</li>
+      </ol>
+    </nav>
+
+    <!-- Form Card -->
+    <div class="card border-0 shadow-sm rounded-4 overflow-hidden bg-white">
+      <div class="card-header bg-dark text-white p-4">
+        <div class="d-flex align-items-center gap-3">
+          <div class="bg-primary text-white rounded-3 d-flex align-items-center justify-content-center" style="width: 48px; height: 48px;">
+            <i class="bi bi-person-workspace fs-4"></i>
+          </div>
+          <div>
+            <h4 class="fw-bold text-white mb-0">{% if object %}Edit Employee Profile{% else %}Create Employee Profile{% endif %}</h4>
+            <p class="text-white-50 mb-0 small">Please specify personal information, designations, skill configurations, and summaries.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="card-body p-5">
+        <form method="post" id="employeeForm" class="needs-validation" novalidate>
+          {% csrf_token %}
+          
+          <!-- Section 1: Personal Details -->
+          <div class="mb-4">
+            <h5 class="fw-bold text-dark mb-3 border-bottom pb-2">Personal Information</h5>
+            
+            <div class="row g-3 mb-3">
+              <div class="col-md-6">
+                <div class="form-floating">
+                  <input type="text" name="first_name" id="{{ form.first_name.id_for_label }}" class="form-control form-control-lg {% if form.first_name.errors %}is-invalid{% endif %}" placeholder="First Name" value="{{ form.first_name.value|default:'' }}" required>
+                  <label for="{{ form.first_name.id_for_label }}">First Name <span class="text-danger">*</span></label>
+                  {% if form.first_name.errors %}
+                    <div class="invalid-feedback d-block">{{ form.first_name.errors.0 }}</div>
+                  {% endif %}
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="form-floating">
+                  <input type="text" name="last_name" id="{{ form.last_name.id_for_label }}" class="form-control form-control-lg {% if form.last_name.errors %}is-invalid{% endif %}" placeholder="Last Name" value="{{ form.last_name.value|default:'' }}" required>
+                  <label for="{{ form.last_name.id_for_label }}">Last Name <span class="text-danger">*</span></label>
+                  {% if form.last_name.errors %}
+                    <div class="invalid-feedback d-block">{{ form.last_name.errors.0 }}</div>
+                  {% endif %}
+                </div>
+              </div>
+            </div>
+
+            <div class="row g-3 mb-3">
+              <div class="col-md-6">
+                <div class="form-floating">
+                  <input type="email" name="email" id="{{ form.email.id_for_label }}" class="form-control form-control-lg {% if form.email.errors %}is-invalid{% endif %}" placeholder="name@company.com" value="{{ form.email.value|default:'' }}" required>
+                  <label for="{{ form.email.id_for_label }}">Corporate Email <span class="text-danger">*</span></label>
+                  {% if form.email.errors %}
+                    <div class="invalid-feedback d-block">{{ form.email.errors.0 }}</div>
+                  {% endif %}
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="form-floating">
+                  <input type="text" name="phone" id="{{ form.phone.id_for_label }}" class="form-control form-control-lg {% if form.phone.errors %}is-invalid{% endif %}" placeholder="Phone Number" value="{{ form.phone.value|default:'' }}">
+                  <label for="{{ form.phone.id_for_label }}">Phone Number (Optional)</label>
+                  {% if form.phone.errors %}
+                    <div class="invalid-feedback d-block">{{ form.phone.errors.0 }}</div>
+                  {% endif %}
+                </div>
+              </div>
+            </div>
+
+            <div class="row g-3">
+              <div class="col-md-6">
+                <div class="form-floating">
+                  {{ form.designation }}
+                  <label for="{{ form.designation.id_for_label }}">Designation / Role Title <span class="text-danger">*</span></label>
+                  {% if form.designation.errors %}
+                    <div class="invalid-feedback d-block">{{ form.designation.errors.0 }}</div>
+                  {% endif %}
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="form-floating">
+                  {{ form.status }}
+                  <label for="{{ form.status.id_for_label }}">Employment Status <span class="text-danger">*</span></label>
+                  {% if form.status.errors %}
+                    <div class="invalid-feedback d-block">{{ form.status.errors.0 }}</div>
+                  {% endif %}
+                </div>
+              </div>
+            </div>
+
+          </div>
+
+          <!-- Section 2: Interactive Professional Summary (Bullets List) -->
+          <div class="mb-4">
+            <h5 class="fw-bold text-dark mb-3 border-bottom pb-2">Professional Summary</h5>
+            
+            <!-- Hidden original field bound to django modelform -->
+            <div style="display:none;">
+              <textarea name="professional_summary" id="id_professional_summary">{{ form.professional_summary.value|default:'' }}</textarea>
+            </div>
+
+            <label class="form-label fw-bold text-secondary small mb-2">Resume Summary Bullet Points</label>
+            <div id="bulletsContainer" class="d-flex flex-column gap-2 mb-3">
+              <!-- Bullet lines will be generated here by JavaScript -->
+            </div>
+
+            <button type="button" class="btn btn-outline-primary btn-sm rounded-pill px-3" id="addBulletBtn">
+              <i class="bi bi-plus-circle me-1"></i>Add Bullet Point
+            </button>
+            <div class="form-text text-muted small mt-2">These will render as formatted bullet points in the resume. Provide at least one bullet.</div>
+            
+            {% if form.professional_summary.errors %}
+              <div class="invalid-feedback d-block mt-1">{{ form.professional_summary.errors.0 }}</div>
+            {% endif %}
+          </div>
+
+          <!-- Section 3: Skill Sets Mappings -->
+          <div class="mb-4">
+            <h5 class="fw-bold text-dark mb-3 border-bottom pb-2">Technical Skill Sets</h5>
+            
+            <div class="row g-3">
+              <div class="col-md-6">
+                <label class="form-label fw-bold text-secondary small">Coding Skills (Multi-select)</label>
+                {{ form.coding_skills }}
+                <div class="form-text text-muted small">Hold Ctrl (or Cmd) to select multiple programming languages. Only active items are shown.</div>
+                {% if form.coding_skills.errors %}
+                  <div class="invalid-feedback d-block">{{ form.coding_skills.errors.0 }}</div>
+                {% endif %}
+              </div>
+              <div class="col-md-6">
+                <label class="form-label fw-bold text-secondary small">Developer Tools (Multi-select)</label>
+                {{ form.tools }}
+                <div class="form-text text-muted small">Hold Ctrl (or Cmd) to select multiple dev utilities. Only active items are shown.</div>
+                {% if form.tools.errors %}
+                  <div class="invalid-feedback d-block">{{ form.tools.errors.0 }}</div>
+                {% endif %}
+              </div>
+            </div>
+
+          </div>
+
+          <!-- Buttons Group -->
+          <div class="d-flex flex-wrap gap-2 pt-3 border-top">
+            <button type="submit" class="btn btn-primary btn-lg rounded-3 px-4 py-2 fw-semibold">
+              <i class="bi bi-save me-2"></i>Save Employee
+            </button>
+            <a href="{% url 'employees:list' %}" class="btn btn-outline-secondary btn-lg rounded-3 px-4 py-2 fw-semibold">
+              Cancel
+            </a>
+            <button type="reset" class="btn btn-light btn-lg rounded-3 px-4 py-2 text-secondary ms-auto">
+              Reset
+            </button>
+          </div>
+
+        </form>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- Bullet points manager script -->
+<script>
+  document.addEventListener("DOMContentLoaded", function() {
+    const originalTextarea = document.getElementById("id_professional_summary");
+    const container = document.getElementById("bulletsContainer");
+    const addBtn = document.getElementById("addBulletBtn");
+    const form = document.getElementById("employeeForm");
+
+    // Initialize list from original textarea value
+    let lines = originalTextarea.value.split("\n").map(l => l.trim()).filter(l => l.length > 0);
+    if (lines.length === 0) {
+      lines = [""];
+    }
+
+    lines.forEach(line => addBulletRow(line));
+
+    // Add bullet event
+    addBtn.addEventListener("click", () => addBulletRow(""));
+
+    // Form submit listener to pack fields
+    form.addEventListener("submit", function(e) {
+      const inputs = container.querySelectorAll(".bullet-input");
+      const textLines = [];
+      inputs.forEach(input => {
+        const val = input.value.trim();
+        if (val) {
+          textLines.push(val);
+        }
+      });
+      originalTextarea.value = textLines.join("\n");
+    });
+
+    function addBulletRow(text) {
+      const row = document.createElement("div");
+      row.className = "d-flex align-items-center gap-2 bullet-row";
+      row.innerHTML = `
+        <div class="text-muted"><i class="bi bi-dot fs-3"></i></div>
+        <input type="text" class="form-control bullet-input" value="${escapeHtml(text)}" placeholder="Enter a professional achievement or skill bullet point..." required>
+        <button type="button" class="btn btn-sm btn-outline-secondary move-up" title="Move Up"><i class="bi bi-arrow-up"></i></button>
+        <button type="button" class="btn btn-sm btn-outline-secondary move-down" title="Move Down"><i class="bi bi-arrow-down"></i></button>
+        <button type="button" class="btn btn-sm btn-outline-danger remove-bullet" title="Remove Bullet"><i class="bi bi-trash"></i></button>
+      `;
+
+      // Wire buttons
+      row.querySelector(".remove-bullet").addEventListener("click", function() {
+        const rowsCount = container.querySelectorAll(".bullet-row").length;
+        if (rowsCount > 1) {
+          row.remove();
+        } else {
+          row.querySelector(".bullet-input").value = "";
+        }
+      });
+
+      row.querySelector(".move-up").addEventListener("click", function() {
+        const prev = row.previousElementSibling;
+        if (prev) {
+          container.insertBefore(row, prev);
+        }
+      });
+
+      row.querySelector(".move-down").addEventListener("click", function() {
+        const next = row.nextElementSibling;
+        if (next) {
+          container.insertBefore(next, row);
+        }
+      });
+
+      container.appendChild(row);
+    }
+
+    function escapeHtml(string) {
+      return String(string).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+    }
+  });
+</script>
+
+<style>
+  .bullet-row {
+    animation: fadeIn 0.2s ease;
+  }
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(5px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+</style>
+{% endblock %}
